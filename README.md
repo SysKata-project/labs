@@ -28,4 +28,10 @@ No runtime or infrastructure provider has been selected, and no lab launcher exi
 
 ## Status
 
-Planning scaffold only; listed capabilities are planned. No license has been selected yet.
+Planning scaffold only; listed capabilities are planned.
+
+## License
+
+Copyright 2026 SysKata contributors.
+
+This repository, including its code, documentation, and learning content, is licensed under the [Apache License 2.0](LICENSE).
