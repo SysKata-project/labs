@@ -95,3 +95,12 @@ put component-specific instructions in a clearly labeled additional section.
 | Blocked | Cannot proceed until a named dependency or decision is resolved |
 | In review | Ready changes awaiting review, approval or merge |
 | Done | Acceptance criteria met; final changes approved and merged; issue closed |
+
+## Secret protection
+
+- Run `sh scripts/install-hooks.sh` after cloning; keep pre-commit and pre-push
+  scanning enabled. Follow [SECRET-PROTECTION.md](SECRET-PROTECTION.md).
+- Never bypass a failed secret scan or print detected secret values. Remove the
+  secret and rotate exposed credentials; review any false-positive exception.
+- Before publishing changes, run `sh scripts/scan-secrets.sh history` as well as
+  the repository's other validation checks.
