@@ -339,12 +339,17 @@ class Validation:
         expiry_time = datetime.datetime.fromisoformat(expiry.replace('Z', '+00:00')).timestamp()
         remaining = expiry_time - time.time()
         self.check('bounded credential lifetime', 0 < remaining <= 660, remaining_seconds=round(remaining))
-        print('Waiting for actual scoped credential expiry; workloads remain isolated.', flush=True)
-        while time.time() < expiry_time + 5:
-            time.sleep(min(10, max(0.1, expiry_time + 5 - time.time())))
+        # Kubernetes uses go-jose's one-minute expiry leeway. Keep the identity
+        # and its RBAC alive until the check, so teardown cannot explain rejection.
+        self.report['expiry_leeway_seconds'] = 60
+        self.save()
+        print('Waiting for scoped credential expiry plus 60-second clock-skew leeway.', flush=True)
+        while time.time() < expiry_time + 65:
+            time.sleep(min(10, max(0.1, expiry_time + 65 - time.time())))
         expired = self.oc('get', 'pods', '-n', ns, config=client)
         self.check('expired credential rejected', expired.returncode != 0 and
-                   ('Unauthorized' in expired.stderr or 'logged in' in expired.stderr))
+                   ('Unauthorized' in expired.stderr or 'logged in' in expired.stderr),
+                   seconds_after_expiration=round(time.time() - expiry_time, 2))
 
 
 def main():

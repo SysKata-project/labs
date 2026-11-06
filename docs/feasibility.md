@@ -61,8 +61,15 @@ removed on normal exit; remove the operator kubeconfig when finished with the
 cluster. Do not run with shell tracing. The sanitized report is the only artifact
 to consider publishing after review and secret scanning.
 
-Expect at least ten minutes: expiry is tested against the server-issued expiration
-rather than inferred from a token's requested duration. Startup time is measured
+Expect at least eleven minutes plus cleanup: expiry is tested against the
+server-issued expiration rather than inferred from a token's requested duration.
+The initial run found that the API accepted a token five seconds after its JWT
+expiration. Kubernetes uses go-jose's one-minute clock-skew allowance. The harness
+therefore tests at expiration +65 seconds, while the service account and RBAC
+still exist, and requires authentication rejection (not merely a Forbidden
+authorization response). The future gateway must enforce its own session deadline
+and close/reject connections at that deadline; JWT expiry alone is not exact TTL
+enforcement. No API server configuration is changed to remove this allowance. Startup time is measured
 from namespace creation through observed deployment availability, including
 provisioning and sequential checks. It is a single-run observation, not a latency
 SLO or percentile. Route propagation has a separate bounded 60-second retry.
@@ -103,7 +110,11 @@ The checks cover deployment, HTTPS route reachability, same-namespace traffic,
 cross-project API and pod-network denial, restricted verbs, supplied-identity RBAC,
 privilege-escalation rejection, quota enforcement, token expiry, and cleanup.
 They do not implement terminal-gateway connection expiry/reconnection or evaluator
-result delivery; those belong to later issues. Infrastructure failures fail this
+result delivery; those belong to later issues. Before exposing a general learner
+shell, labs #2 must additionally constrain Service types/external IPs and route
+exposure, bound API object counts, and enforce session TTL/admission. This proof
+creates only ClusterIP services and no paid infrastructure; it is not an
+unchanged production authorization profile. Infrastructure failures fail this
 validation and must never be recorded as learner mistakes.
 
 ## Teardown and failure recovery
@@ -155,3 +166,6 @@ these checks without cluster credentials. Live validation is operator-triggered.
 - [Kubernetes service accounts](https://kubernetes.io/docs/concepts/security/service-accounts/)
 - [Token duration can differ from the request](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
 - [Kubernetes validating admission policies](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)
+
+- [Kubernetes service-account claim validation](https://github.com/kubernetes/kubernetes/blob/master/pkg/serviceaccount/claims.go)
+- [go-jose default expiry leeway](https://github.com/go-jose/go-jose/blob/main/jwt/validation.go)
