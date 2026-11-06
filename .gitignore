@@ -13,3 +13,7 @@ kubeconfig
 *.kubeconfig
 .kube/
 .aws/
+
+# Python validation tooling
+__pycache__/
+*.pyc

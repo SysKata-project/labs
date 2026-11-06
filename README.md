@@ -24,15 +24,16 @@ Provision a single reproducible exercise environment, run an outcome-based asses
 
 ## Development and contribution
 
-No runtime or infrastructure provider has been selected, and no lab launcher exists yet. Proposals should include the skills supported, environment lifecycle, assessment behavior, and failure recovery. Coordinate contracts in [docs](https://github.com/SysKata-project/docs).
+An ephemeral OpenShift feasibility harness is available; no lab launcher exists yet. Proposals should include the skills supported, environment lifecycle, assessment behavior, and failure recovery. Coordinate contracts in [docs](https://github.com/SysKata-project/docs).
 
 ## Implementation design
 
 - [OpenShift lab execution](docs/openshift-labs.md)
+- [Repeatable runtime feasibility and accepted test budget](docs/feasibility.md)
 
 ## Status
 
-Planning scaffold only; listed capabilities are planned.
+Feasibility validation is in progress. The lifecycle service, terminal gateway and assessment workers remain planned.
 
 ## MVP implementation tracking
 
