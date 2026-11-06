@@ -160,6 +160,32 @@ sh scripts/scan-secrets.sh history
 Offline tests verify defensive behavior and do not replace live evidence. CI runs
 these checks without cluster credentials. Live validation is operator-triggered.
 
+## Recorded validation: 2026-11-06
+
+[Sanitized live report](evidence/2026-11-06-openshift.json) and
+[workload security evidence](evidence/2026-11-06-workloads.json) record the run
+against OpenShift 4.22.20 / Kubernetes v1.35.9.
+The tested harness source is commit `4cc7954`.
+
+- 33 live checks passed, followed by verified deletion of both namespaces
+  and the run-owned admission binding/policy.
+- The two deployment-readiness observations were 6.05 and 7.4 seconds.
+  These are warm-image observations; an earlier run observed roughly 25 seconds.
+- Both workloads used the pinned image digest, `restricted-v2`, and assigned
+  non-root UIDs; see the workload evidence for the exact values.
+- The 600-second credential was rejected at 65.7 seconds after
+  its declared expiration, with its service account/RBAC still present. A prior
+  +5-second test failed, exposing the clock-skew allowance documented above.
+- Failure-path cleanup was also observed after the initial route-readiness failure
+  and the earlier expiry-boundary failure. These are not represented as passing
+  end-to-end runs.
+- Ten offline tests, Python syntax, whitespace, and local Markdown links passed.
+  Kubernetes reference links returned HTTP 200. Red Hat's documentation endpoint
+  returned HTTP 403 to the automated link check; its search-indexed official
+  reference was located, but full-page retrieval could not be verified.
+- Local working-tree, staged, and history secret scans passed. CI also runs
+  offline tests and secret scanning without cluster credentials.
+
 ## References
 
 - [OpenShift 4.22 network policy](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/network_security/network-policy)

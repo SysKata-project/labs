@@ -33,7 +33,7 @@ An ephemeral OpenShift feasibility harness is available; no lab launcher exists 
 
 ## Status
 
-Feasibility validation is in progress. The lifecycle service, terminal gateway and assessment workers remain planned.
+The bounded feasibility profile has been validated on ephemeral OpenShift 4.22.20. The lifecycle service, terminal gateway and assessment workers remain planned.
 
 ## MVP implementation tracking
 

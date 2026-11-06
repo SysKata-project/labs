@@ -1,0 +1,152 @@
+{
+  "run_id": "sk-feas-561534d4ed",
+  "started_utc": "2026-11-06T17:13:48.713999+00:00",
+  "image": "registry.access.redhat.com/ubi9/python-312@sha256:2e0c178f11ae69bc65cad2352c0832aadbc57d429e0160929ec436d6ba9b4e78",
+  "concurrency": 2,
+  "checks": [
+    {
+      "check": "deployment ready 0",
+      "passed": true,
+      "seconds": 6.05
+    },
+    {
+      "check": "route reachable 0",
+      "passed": true,
+      "route_wait_seconds": 2.7
+    },
+    {
+      "check": "same namespace traffic 0",
+      "passed": true
+    },
+    {
+      "check": "deployment ready 1",
+      "passed": true,
+      "seconds": 7.4
+    },
+    {
+      "check": "route reachable 1",
+      "passed": true,
+      "route_wait_seconds": 0.53
+    },
+    {
+      "check": "same namespace traffic 1",
+      "passed": true
+    },
+    {
+      "check": "restricted get secrets",
+      "passed": true
+    },
+    {
+      "check": "restricted create serviceaccounts/token",
+      "passed": true
+    },
+    {
+      "check": "restricted create networkpolicies",
+      "passed": true
+    },
+    {
+      "check": "restricted delete resourcequotas/outer-budget",
+      "passed": true
+    },
+    {
+      "check": "restricted patch resourcequotas/outer-budget",
+      "passed": true
+    },
+    {
+      "check": "restricted get nodes",
+      "passed": true
+    },
+    {
+      "check": "restricted create namespaces",
+      "passed": true
+    },
+    {
+      "check": "restricted patch namespaces",
+      "passed": true
+    },
+    {
+      "check": "restricted create validatingadmissionpolicies",
+      "passed": true
+    },
+    {
+      "check": "restricted impersonate users",
+      "passed": true
+    },
+    {
+      "check": "restricted bind clusterroles/cluster-admin",
+      "passed": true
+    },
+    {
+      "check": "restricted escalate roles",
+      "passed": true
+    },
+    {
+      "check": "cross-project API denial",
+      "passed": true
+    },
+    {
+      "check": "cross-project network denial 0",
+      "passed": true
+    },
+    {
+      "check": "cross-project network denial 1",
+      "passed": true
+    },
+    {
+      "check": "pod egress to API denied",
+      "passed": true
+    },
+    {
+      "check": "supplied identity can read pods",
+      "passed": true
+    },
+    {
+      "check": "supplied identity cannot delete pods",
+      "passed": true
+    },
+    {
+      "check": "role binding escalation rejected",
+      "passed": true
+    },
+    {
+      "check": "admission rejects auto-token",
+      "passed": true
+    },
+    {
+      "check": "admission rejects project-token",
+      "passed": true
+    },
+    {
+      "check": "admission rejects select-learner",
+      "passed": true
+    },
+    {
+      "check": "privileged workload rejected",
+      "passed": true
+    },
+    {
+      "check": "exercise quota rejects extra pod",
+      "passed": true
+    },
+    {
+      "check": "outer quota cannot be changed",
+      "passed": true
+    },
+    {
+      "check": "bounded credential lifetime",
+      "passed": true,
+      "remaining_seconds": 566
+    },
+    {
+      "check": "expired credential rejected",
+      "passed": true,
+      "seconds_after_expiration": 65.7
+    }
+  ],
+  "openshift_version": "4.22.20",
+  "network_type": "OVNKubernetes",
+  "expiry_leeway_seconds": 60,
+  "validation_passed": true,
+  "cleanup_passed": true,
+  "finished_utc": "2026-11-06T17:26:36.620873+00:00"
+}
