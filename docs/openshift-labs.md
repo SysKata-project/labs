@@ -1,6 +1,8 @@
 # OpenShift lab execution design
 
-Status: planned MVP; provider, gateway and verified OpenShift version are not selected.
+Status: planned MVP with an ephemeral OpenShift 4.22.20 feasibility spike. See
+[validation scope and evidence](feasibility.md); the gateway and durable runtime
+provider remain unimplemented/unselected.
 
 ## Pilot environments
 
