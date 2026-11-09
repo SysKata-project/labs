@@ -16,6 +16,9 @@ put component-specific instructions in a clearly labeled additional section.
 - Work the issue requested by the user. Otherwise inspect the live project and
   select the highest-priority Ready issue whose blocking dependencies are met;
   use project order to break ties. Do not duplicate another contributor's work.
+- If no issue is Ready, reconcile backlog readiness using the completion rules
+  below before selecting work. Do not treat a stale Backlog status alone as a
+  blocker or promote an issue with unresolved blocking dependencies.
 - Read the full issue, acceptance criteria, dependencies, linked decisions and
   relevant repository instructions before editing. Confirm the issue is open
   and check for existing branches or pull requests.
@@ -81,6 +84,19 @@ put component-specific instructions in a clearly labeled additional section.
   runtime validation. A merge with outstanding acceptance work is not Done.
 - After those conditions hold, close the issue (or verify automatic closure)
   and set project Status to **Done**. Confirm both states on GitHub.
+- Reconcile readiness in the live project after completion: review dependent
+  Backlog issues and promote those whose blocking dependencies are all complete
+  and whose scope is sufficiently defined to **Ready**. Verify dependency issue
+  states and required merged changes; do not infer completion from a closed PR
+  or a local planning snapshot.
+- Preserve priority and phase, respect explicit deferrals and existing ownership,
+  and leave coordination trackers or issues with unmet dependencies in their
+  appropriate state. Partial scaffolding permission does not make an entire
+  blocked deliverable Ready. If a material readiness decision is unresolved,
+  ask the owner one question at a time.
+- Confirm each project update succeeded and report promoted issues and the next
+  eligible issue by priority and project order. If access prevents reconciliation,
+  report the exact limitation; never claim an unverified status change.
 - Report the issue/PR links, what changed, validation results and any explicitly
   deferred follow-up work. If approval, merge or validation is pending, state
   what remains and leave the issue open in the appropriate project state.
