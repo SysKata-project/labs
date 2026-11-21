@@ -17,3 +17,6 @@ kubeconfig
 # Python validation tooling
 __pycache__/
 *.pyc
+
+# Java build output
+/target/
