@@ -94,7 +94,8 @@ public class Lifecycle {
   }
 
   private void requireReset(Lab lab) {
-    if (!Instant.now().isBefore(lab.expiresAt())) {
+    if (!Instant.now().isBefore(lab.expiresAt())
+        || !Instant.now().isBefore(lab.lastActivity().plusSeconds(600))) {
       throw new LabFailure(410, "lab_expired");
     }
     if (!lab.state().equals("ready")) {

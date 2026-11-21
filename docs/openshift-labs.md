@@ -1,8 +1,11 @@
 # OpenShift lab execution design
 
-Status: planned MVP with an ephemeral OpenShift 4.22.20 feasibility spike. See
-[validation scope and evidence](feasibility.md); the gateway and durable runtime
-provider remain unimplemented/unselected.
+Status: the namespace-scoped lifecycle service and terminal gateway have been
+implemented and tested on ephemeral OpenShift 4.22.22. See the
+[service contract](lifecycle-service.md) and [validation evidence](lifecycle-validation.md).
+The durable production provider remains unselected; trusted assessment remains
+in labs #3. The earlier [feasibility profile](feasibility.md) defines the bounded
+namespace isolation assumptions.
 
 ## Pilot environments
 
@@ -14,7 +17,7 @@ An early feasibility spike selects hosting, access entitlements, startup latency
 
 ## Lifecycle and authorization
 
-Use provisioning → ready → active → assessing → completed, with explicit expired, failed and closed states. Persist lifecycle state and reconcile orphaned resources after process restarts. API requests use a stable session/generation ID and idempotent provision/reset/close operations. Reset creates a new generation; stale assessment results cannot complete it.
+The implemented API-aligned lifecycle is provisioning → ready, with resetting, closing, closed, expired and infrastructure_error states. Assessment-job state remains separate. Persist lifecycle state and reconcile orphaned resources after process restarts. API requests use a stable session/generation ID and idempotent provision/reset/close operations. Reset creates a new generation; stale assessment results cannot complete it.
 
 A gateway provides a shell containing oc and short-lived credentials scoped to the assigned project and required verbs. Bind every connection to learner/session, verify expiry on connection/reconnection, and revoke credentials on teardown. Restrict egress, privilege escalation and cross-project access. Keep learner credentials separate from trusted evaluator credentials.
 

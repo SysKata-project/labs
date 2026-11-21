@@ -13,7 +13,7 @@ def render(namespace):
     verbs = ['get', 'list', 'watch', 'create', 'update', 'patch', 'delete']
     role = {'apiVersion': 'rbac.authorization.k8s.io/v1', 'kind': 'ClusterRole',
             'metadata': {'name': name}, 'rules': [
-        {'apiGroups': [''], 'resources': ['namespaces'], 'verbs': ['get', 'list', 'create', 'delete']},
+        {'apiGroups': [''], 'resources': ['namespaces'], 'verbs': ['get', 'list', 'watch', 'create', 'delete']},
         {'apiGroups': [''], 'resources': ['pods', 'services', 'resourcequotas', 'serviceaccounts'], 'verbs': verbs},
         {'apiGroups': [''], 'resources': ['pods/exec', 'serviceaccounts/token'], 'verbs': ['create']},
         {'apiGroups': [''], 'resources': ['pods/log'], 'verbs': ['get']},
@@ -28,7 +28,7 @@ def render(namespace):
               'metadata': {'name': name}, 'spec': {
         'failurePolicy': 'Fail',
         'matchConstraints': {'resourceRules': [{'apiGroups': ['*'], 'apiVersions': ['*'],
-            'operations': ['CREATE', 'UPDATE', 'DELETE', 'CONNECT'], 'resources': ['*', '*/*']}]},
+            'operations': ['CREATE', 'UPDATE', 'DELETE', 'CONNECT'], 'resources': ['*/*']}]},
         'matchConditions': [{'name': 'controller-only', 'expression': 'request.userInfo.username == ' + json.dumps(username)}],
         'validations': [
             {'expression': "request.resource.resource == 'namespaces' ? ((request.operation == 'CREATE' ? object.metadata.name : oldObject.metadata.name).matches('^sk-(lab|term)-[a-f0-9]{32}-g[0-9]+$') && (request.operation == 'CREATE' ? object.metadata.labels : oldObject.metadata.labels)['syskata.io/lab-session'].matches('^[a-f0-9-]{36}$')) : (namespaceObject != null && namespaceObject.metadata.name.matches('^sk-(lab|term)-[a-f0-9]{32}-g[0-9]+$') && has(namespaceObject.metadata.labels) && 'syskata.io/lab-session' in namespaceObject.metadata.labels)",

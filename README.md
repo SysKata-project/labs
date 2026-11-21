@@ -24,7 +24,7 @@ Provision a single reproducible exercise environment, run an outcome-based asses
 
 ## Development and contribution
 
-An ephemeral OpenShift feasibility harness and an in-progress Java lab service are available. See [local setup and validation limits](docs/lifecycle-service.md). Proposals should include the skills supported, environment lifecycle, assessment behavior, and failure recovery. Coordinate contracts in [docs](https://github.com/SysKata-project/docs).
+An ephemeral OpenShift feasibility harness and a Java lab lifecycle service are available. See [local setup and validation limits](docs/lifecycle-service.md). Proposals should include the skills supported, environment lifecycle, assessment behavior, and failure recovery. Coordinate contracts in [docs](https://github.com/SysKata-project/docs).
 
 ## Implementation design
 
@@ -33,7 +33,7 @@ An ephemeral OpenShift feasibility harness and an in-progress Java lab service a
 
 ## Status
 
-The bounded feasibility profile has been validated on ephemeral OpenShift 4.22.20. The lifecycle service and terminal gateway are in development; replacement-cluster validation is pending. Assessment workers remain planned.
+The bounded feasibility profile has been validated on ephemeral OpenShift 4.22.20. The lifecycle service and terminal gateway have also been validated on ephemeral OpenShift 4.22.22; see the [evidence and limits](docs/lifecycle-validation.md). Assessment workers remain planned.
 
 ## MVP implementation tracking
 

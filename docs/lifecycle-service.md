@@ -1,7 +1,7 @@
 # Lab lifecycle service and terminal gateway
 
 Tracking: [labs #2](https://github.com/SysKata-project/labs/issues/2).
-Status: implementation in progress; replacement-cluster validation is pending.
+Scope: a namespace-scoped pilot service validated on ephemeral OpenShift 4.22.22.
 [Accepted decisions](lifecycle-decisions.md) define the pilot limits.
 See [validation evidence and outstanding acceptance](lifecycle-validation.md).
 
@@ -21,7 +21,7 @@ sh scripts/scan-secrets.sh history
 sh scripts/test-database.sh stop
 ```
 
-The database fixture binds only to loopback, contains synthetic test data and
+The database fixture uses a bounded 256 MiB tmpfs, binds only to loopback, contains synthetic test data and
 uses trust authentication solely for disposable tests. Never use that mode for
 shared deployments. Production configuration requires explicit database secrets.
 `./mvnw spotless:apply` formats Java. Verification enforces 80% line and branch
@@ -75,7 +75,8 @@ invalidates tickets and retains every old generation until cleanup succeeds.
 A reconciler runs every two seconds, with a database advisory lock across workers.
 It resumes persisted provisioning/reset/cleanup after restart. Namespace names are
 deterministic from session UUID and generation, and deletion requires the exact
-session ownership label. Only verified absence releases capacity. A failed cluster
+session ownership label. Teardown deletes the learner service account before waiting, then requests both
+namespace deletions together. Only verified absence releases capacity. A failed cluster
 request never counts as successful cleanup. Never remove finalizers automatically.
 
 The 30-minute lease starts at admission. Ready sessions idle out after ten minutes
@@ -123,12 +124,14 @@ oc create -f /private/tmp/syskata-lab-policy.json
 
 Provisioning verifies the expected policy before issuing credentials. Policies
 select only `syskata.io/lab-managed=true` namespaces. They forbid pod token
-mounts, non-default workload service accounts, external Services, arbitrary
-route hosts and wildcard routes. Only `web.<learner namespace>.<apps domain>` with
+mounts, Secret volume/environment references, non-default workload service accounts, external Services, arbitrary
+route hosts and wildcard routes. Only `web-<learner namespace>.<apps domain>` with
 edge TLS and HTTP redirect is allowed. Object-count quotas supplement compute
 quotas. The learner cannot change quotas/policies/service accounts except the
-explicit exercise quota. Terminal network egress allows the configured API /32
-on port 6443 and cluster DNS only. Workload policy follows the validated
+explicit exercise quota. Terminal network egress allows the configured pod-visible API /32
+on port 6443 and cluster DNS only. Resolve the API from inside the cluster: split DNS
+can return a different address than the operator workstation. Readiness probes
+the API from the terminal pod and refuses an unreachable endpoint. Workload policy follows the validated
 [feasibility boundary](feasibility.md).
 
 Do not use a cluster-admin kubeconfig as the service runtime identity. Render the scoped controller service account, RBAC and write-boundary policy with
@@ -143,13 +146,45 @@ TokenRequest for learners, terminal exec, and read-only policy verification;
 cluster-scoped namespace creation is a privileged controller responsibility.
 Evaluator credentials remain separate and are outside this issue.
 
-The replacement cluster, verified terminal image digest, controller RBAC, policy
-admission and network behavior still require live validation. API #5 supplies the
-public adapter; labs #3 supplies trusted assessment. Do not claim a production
-launcher or completed issue until the missing validation and implementation
-limitations are resolved.
+The tested cluster version, image digest, controller permissions, policy checks,
+terminal scenarios and cleanup evidence are recorded in
+[validation evidence](lifecycle-validation.md). API #5 supplies the public adapter;
+labs #3 supplies trusted assessment. This bounded validation is not a production
+launcher, a full adversarial audit or a mobile terminal acceptance test.
 
 ## Implementation references
 
 - [Quarkus WebSockets Next](https://quarkus.io/guides/websockets-next-reference/)
 - [Kubernetes validating admission policy](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)
+
+## Repeating the live lifecycle suite
+
+Use an isolated loopback service/database and an operator-approved test cluster;
+never point the fixture clock controls at learner data. Install
+`requirements-live.txt` into a private virtual environment. Keep the runtime JSON
+outside Git, mode 0600, with the variables from `.env.example` plus
+`QUARKUS_HTTP_HOST=127.0.0.1`, `QUARKUS_HTTP_PORT=8089`, and a PATH containing
+Python and oc. Set `LAB_DB_URL` to
+`jdbc:postgresql://127.0.0.1:55433/syskata_labs` for this fixture only.
+
+```sh
+export SYSKATA_LIVE_RUNTIME_CONFIG=/private/path/runtime.json
+# JAVA_HOME must point to the pinned JDK. Start the disposable database first.
+python3 scripts/live-service.py start
+python3 scripts/verify-lifecycle.py \
+  --runtime-config "$SYSKATA_LIVE_RUNTIME_CONFIG" \
+  --feasibility-report /private/path/passing-feasibility.json \
+  --report /private/path/lifecycle-report.json \
+  --service-control scripts/live-service.py
+python3 scripts/live-service.py stop
+```
+
+The harness refuses to start sessions until feasibility and its cleanup passed.
+It uses real WebSockets and oc shells, checks admission and capacity, and resets
+sessions. Lease/idle checks deliberately advance only synthetic database fixture
+timestamps; these are accelerated boundary tests, not 30-minute wall-clock soak
+tests. A temporary adapter creates a real partial namespace, injects provisioning
+and cleanup failures, then restores the normal adapter and restarts the service.
+Reports contain bounded check names/results, never terminal transcripts or tokens.
+The operator must verify final namespace absence and remove the approved test
+controller/admission resources after the run. Revoke/remove private credentials.

@@ -10,7 +10,9 @@ import re
 import signal
 import subprocess
 import sys
+import time
 import uuid
+from urllib.parse import urlparse
 
 spec = importlib.util.spec_from_file_location('feasibility', Path(__file__).with_name('validate-openshift.py'))
 feasibility = importlib.util.module_from_spec(spec)
@@ -59,8 +61,16 @@ def policy_documents(domain):
     policy['spec']['validations'] += [
         {'expression': "object.kind != 'Service' || ((!has(object.spec.type) || object.spec.type == 'ClusterIP') && (!has(object.spec.externalIPs) || size(object.spec.externalIPs) == 0) && (!has(object.spec.externalName) || object.spec.externalName == ''))",
          'message': 'Only internal ClusterIP services are allowed'},
-        {'expression': "object.kind != 'Route' || (object.metadata.name == 'web' && object.spec.host == 'web.' + object.metadata.namespace + '." + domain + "' && object.spec.to.kind == 'Service' && object.spec.to.name == 'web' && (!has(object.spec.alternateBackends) || size(object.spec.alternateBackends) == 0) && (!has(object.spec.wildcardPolicy) || object.spec.wildcardPolicy == 'None') && has(object.spec.tls) && object.spec.tls.termination == 'edge' && object.spec.tls.insecureEdgeTerminationPolicy == 'Redirect' && !has(object.spec.tls.key) && !has(object.spec.tls.certificate) && (!has(object.spec.path) || object.spec.path == ''))",
+        {'expression': "object.kind != 'Route' || (object.metadata.name == 'web' && object.spec.host == 'web-' + object.metadata.namespace + '." + domain + "' && object.spec.to.kind == 'Service' && object.spec.to.name == 'web' && (!has(object.spec.alternateBackends) || size(object.spec.alternateBackends) == 0) && (!has(object.spec.wildcardPolicy) || object.spec.wildcardPolicy == 'None') && has(object.spec.tls) && object.spec.tls.termination == 'edge' && object.spec.tls.insecureEdgeTerminationPolicy == 'Redirect' && !has(object.spec.tls.key) && !has(object.spec.tls.certificate) && (!has(object.spec.path) || object.spec.path == ''))",
          'message': 'Only the assigned HTTPS web route is allowed'}]
+    policy['spec']['validations'] += [
+        {'expression': "object.kind != 'Pod' || (!has(object.spec.volumes) || object.spec.volumes.all(v, has(v.emptyDir) || has(v.configMap) || has(v.downwardAPI)))",
+         'message': 'SysKata: secret and external volume sources are forbidden'},
+        {'expression': "object.kind != 'Pod' || (object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])).all(c, (!has(c.env) || c.env.all(e, !has(e.valueFrom) || !has(e.valueFrom.secretKeyRef))) && (!has(c.envFrom) || c.envFrom.all(e, !has(e.secretRef))))",
+         'message': 'SysKata: secret environment references are forbidden'}]
+    # Mixed resource kinds require dynamic spec access; kind guards select each schema.
+    for validation in policy['spec']['validations']:
+        validation['expression'] = validation['expression'].replace('object.spec', 'dyn(object).spec')
     return docs
 
 
@@ -151,18 +161,38 @@ def provision(session, generation, scenario):
     apply(pod, terminal)
     oc('wait', '-n', terminal, 'pod/terminal', '--for=condition=Ready', '--timeout=120s')
     oc('exec', '-n', terminal, 'terminal', '--', 'oc', 'version', '--client')
+    # OpenShift commonly uses split DNS. Check the pod-visible API, not workstation DNS.
+    server = oc('config', 'view', '--minify', '-o', 'jsonpath={.clusters[0].cluster.server}').stdout
+    endpoint = urlparse(server)
+    if endpoint.scheme != 'https' or not endpoint.hostname:
+        raise ValueError('HTTPS API endpoint required')
+    oc('exec', '-n', terminal, 'terminal', '--', 'timeout', '10', 'bash', '-c',
+       'exec 3<>/dev/tcp/"$1"/"$2"', '--', endpoint.hostname, str(endpoint.port or 443))
 
 
 def close(session, generation):
-    for name in reversed(names(session, generation)):
+    learner, terminal_name = names(session, generation)
+    owned = []
+    for name in [terminal_name, learner]:
         existing = oc('get', 'namespace', name, '--ignore-not-found', '-o', 'json').stdout
         if not existing:
             continue
         if json.loads(existing)['metadata'].get('labels', {}).get(LABEL) != session:
             raise RuntimeError('refusing unowned cleanup')
-        oc('delete', 'namespace', name, '--wait=true', '--timeout=120s')
-        if oc('get', 'namespace', name, '--ignore-not-found', '-o', 'json').stdout:
-            raise RuntimeError('cleanup not confirmed')
+        owned.append(name)
+    if learner in owned:
+        # Revoke the credential identity before waiting for workload termination.
+        oc('delete', 'serviceaccount', 'learner', '-n', learner, '--ignore-not-found', '--wait=false')
+    for name in owned:
+        oc('delete', 'namespace', name, '--wait=false')
+    deadline = time.monotonic() + 120
+    while owned:
+        owned = [name for name in owned
+                 if oc('get', 'namespace', name, '--ignore-not-found', '-o', 'json').stdout]
+        if owned:
+            if time.monotonic() >= deadline:
+                raise RuntimeError('cleanup not confirmed')
+            time.sleep(2)
 
 
 def terminal(session, generation):

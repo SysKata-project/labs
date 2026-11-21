@@ -27,7 +27,7 @@ jobs:
       - name: Verify cluster boundary helpers
         run: |
           python3 -m unittest discover -s tests -v
-          python3 -m py_compile scripts/cluster.py scripts/controller-rbac.py scripts/validate-openshift.py
+          python3 -m py_compile scripts/cluster.py scripts/controller-rbac.py scripts/validate-openshift.py scripts/verify-lifecycle.py scripts/live-service.py
       - name: Remove disposable PostgreSQL fixture
         if: always()
         run: CONTAINER_ENGINE=docker sh scripts/test-database.sh stop

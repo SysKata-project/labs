@@ -1,0 +1,151 @@
+{
+  "checks": [
+    {
+      "check": "idempotent provision foundations",
+      "passed": true
+    },
+    {
+      "check": "ready foundations",
+      "passed": true
+    },
+    {
+      "check": "idempotent provision administration",
+      "passed": true
+    },
+    {
+      "check": "ready administration",
+      "passed": true
+    },
+    {
+      "check": "two-session capacity enforced",
+      "passed": true
+    },
+    {
+      "check": "cross-learner HTTP ownership",
+      "passed": true
+    },
+    {
+      "check": "real oc shell",
+      "passed": true
+    },
+    {
+      "check": "no mounted controller token",
+      "passed": true
+    },
+    {
+      "check": "cross-learner API denial from terminal",
+      "passed": true
+    },
+    {
+      "check": "terminal cannot read secrets",
+      "passed": true
+    },
+    {
+      "check": "NodePort rejected by admission",
+      "passed": true
+    },
+    {
+      "check": "external IP rejected by admission",
+      "passed": true
+    },
+    {
+      "check": "ClusterIP service accepted",
+      "passed": true
+    },
+    {
+      "check": "foreign route host rejected",
+      "passed": true
+    },
+    {
+      "check": "assigned HTTPS route accepted",
+      "passed": true
+    },
+    {
+      "check": "automatic pod token rejected",
+      "passed": true
+    },
+    {
+      "check": "learner cannot change outer quota",
+      "passed": true
+    },
+    {
+      "check": "bounded service allocation 1",
+      "passed": true
+    },
+    {
+      "check": "bounded service allocation 2",
+      "passed": true
+    },
+    {
+      "check": "bounded service allocation 3",
+      "passed": true
+    },
+    {
+      "check": "service object-count quota enforced",
+      "passed": true
+    },
+    {
+      "check": "ticket replay rejected",
+      "passed": true
+    },
+    {
+      "check": "reconnect with fresh ticket",
+      "passed": true
+    },
+    {
+      "check": "reset preserves lease",
+      "passed": true
+    },
+    {
+      "check": "reset replay",
+      "passed": true
+    },
+    {
+      "check": "reset disconnects old terminal",
+      "passed": true
+    },
+    {
+      "check": "reset revokes old Kubernetes credential",
+      "passed": true
+    },
+    {
+      "check": "new-generation terminal",
+      "passed": true
+    },
+    {
+      "check": "expired lease disconnects real terminal",
+      "passed": true
+    },
+    {
+      "check": "expired reconnect denied",
+      "passed": true
+    },
+    {
+      "check": "administration terminal ready",
+      "passed": true
+    },
+    {
+      "check": "idle limit disconnects real terminal",
+      "passed": true
+    },
+    {
+      "check": "expired labs cleaned",
+      "passed": true
+    },
+    {
+      "check": "partial provisioning failure is infrastructure state",
+      "passed": true
+    },
+    {
+      "check": "failed cleanup remains outstanding",
+      "passed": true
+    },
+    {
+      "check": "restart reconciles partial resources and failed cleanup",
+      "passed": true
+    }
+  ],
+  "terminal_image": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:dd774d7a11bb59a6500e5f24130cb3fe8e2fa6f15c85b9a44d52e1635b015699",
+  "cleanup_passed": true,
+  "validation_passed": true
+}

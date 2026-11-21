@@ -157,6 +157,8 @@ class LifecycleTest {
     Lab lab = ready("alice");
     sql("UPDATE lab_sessions SET last_activity=now()-interval '601 seconds' WHERE id=?", lab.id());
     fails(410, () -> lifecycle.authorize(lab.id(), "alice", 1, true));
+    fails(
+        410, () -> lifecycle.change(UUID.randomUUID(), lab.id(), "alice", lab.revision(), 1, true));
     sql(
         "UPDATE lab_sessions SET last_activity=now(),expires_at=now()-interval '1 second' WHERE id=?",
         lab.id());
