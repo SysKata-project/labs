@@ -1,0 +1,9 @@
+{
+  "learner_namespaces_absent": true,
+  "test_admission_removed": true,
+  "test_controller_rbac_removed": true,
+  "controller_namespace_absent": true,
+  "controller_credentials_removed": true,
+  "operator_session_logged_out": true,
+  "private_runtime_credentials_removed": true
+}

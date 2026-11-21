@@ -1,8 +1,9 @@
 # OpenShift feasibility spike
 
 Tracking: [labs #1](https://github.com/SysKata-project/labs/issues/1).
-This is a disposable runtime proof, not the lab lifecycle service or terminal
-gateway planned in labs #2. A passing run does not establish production readiness.
+This is a disposable runtime proof. The later
+[lab lifecycle validation](lifecycle-validation.md) records the service/gateway
+and a passing replacement-cluster run on OpenShift 4.22.22. A passing run does not establish production readiness.
 
 ## Accepted scope and budget
 

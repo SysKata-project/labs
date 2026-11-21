@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "check": "idempotent provision administration",
+      "passed": true
+    },
+    {
+      "check": "ready administration",
+      "passed": true
+    },
+    {
+      "check": "deletion fixture terminal ready",
+      "passed": true
+    },
+    {
+      "check": "NodePort rejected by admission",
+      "passed": true
+    },
+    {
+      "check": "external IP rejected by admission",
+      "passed": true
+    },
+    {
+      "check": "ClusterIP service accepted",
+      "passed": true
+    },
+    {
+      "check": "foreign route host rejected",
+      "passed": true
+    },
+    {
+      "check": "assigned HTTPS route accepted",
+      "passed": true
+    },
+    {
+      "check": "automatic pod token rejected",
+      "passed": true
+    },
+    {
+      "check": "indirect Secret volume rejected",
+      "passed": true
+    },
+    {
+      "check": "indirect Secret environment rejected",
+      "passed": true
+    },
+    {
+      "check": "learner cannot change outer quota",
+      "passed": true
+    },
+    {
+      "check": "bounded service allocation 1",
+      "passed": true
+    },
+    {
+      "check": "bounded service allocation 2",
+      "passed": true
+    },
+    {
+      "check": "bounded service allocation 3",
+      "passed": true
+    },
+    {
+      "check": "service object-count quota enforced",
+      "passed": true
+    },
+    {
+      "check": "account disable disconnects terminal",
+      "passed": true
+    },
+    {
+      "check": "disabled account cannot resume",
+      "passed": true
+    },
+    {
+      "check": "disabled account resources cleaned",
+      "passed": true
+    }
+  ],
+  "terminal_image": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:dd774d7a11bb59a6500e5f24130cb3fe8e2fa6f15c85b9a44d52e1635b015699",
+  "validation_passed": true,
+  "cleanup_passed": true
+}
