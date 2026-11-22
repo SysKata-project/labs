@@ -14,6 +14,9 @@ import time
 import uuid
 from urllib.parse import urlparse
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import evaluator_rbac
+
 spec = importlib.util.spec_from_file_location('feasibility', Path(__file__).with_name('validate-openshift.py'))
 feasibility = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(feasibility)
@@ -151,6 +154,11 @@ def provision(session, generation, scenario):
                    {'to': [{'namespaceSelector': {'matchLabels': {'kubernetes.io/metadata.name': 'openshift-dns'}}}],
                     'ports': [{'protocol': protocol, 'port': port} for protocol in ['TCP', 'UDP'] for port in [53, 5353]]}]
     }, 'networking.k8s.io/v1'), terminal)
+    evaluator_namespace = os.environ.get('LAB_EVALUATOR_NAMESPACE')
+    if evaluator_namespace:
+        for target, terminal_scope in [(learner, False), (terminal, True)]:
+            for obj in evaluator_rbac.roles(target, evaluator_namespace, terminal_scope):
+                apply(obj, target)
     pod = resource('Pod', 'terminal', {
         'automountServiceAccountToken': False,
         'securityContext': {'seccompProfile': {'type': 'RuntimeDefault'}},

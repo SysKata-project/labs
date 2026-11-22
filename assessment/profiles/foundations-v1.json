@@ -1,0 +1,81 @@
+{
+  "checkpoint": "checkpoint.oc-foundations",
+  "revision": 1,
+  "evaluator": "openshift.foundations",
+  "version": 1,
+  "deployment": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "name": "web",
+      "labels": {
+        "app": "web"
+      }
+    },
+    "spec": {
+      "replicas": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "web"
+        }
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "web"
+          }
+        },
+        "spec": {
+          "automountServiceAccountToken": false,
+          "securityContext": {
+            "seccompProfile": {
+              "type": "RuntimeDefault"
+            }
+          },
+          "containers": [
+            {
+              "name": "web",
+              "image": "registry.access.redhat.com/ubi9/python-312@sha256:2e0c178f11ae69bc65cad2352c0832aadbc57d429e0160929ec436d6ba9b4e78",
+              "command": [
+                "python3",
+                "-c",
+                "import http.server\nimport os\nos.makedirs('/tmp/syskata-web', exist_ok=True)\nos.chdir('/tmp/syskata-web')\nhttp.server.ThreadingHTTPServer(('0.0.0.0', 8080), http.server.SimpleHTTPRequestHandler).serve_forever()\n"
+              ],
+              "ports": [
+                {
+                  "containerPort": 8080
+                }
+              ],
+              "securityContext": {
+                "allowPrivilegeEscalation": false,
+                "capabilities": {
+                  "drop": [
+                    "ALL"
+                  ]
+                }
+              },
+              "resources": {
+                "requests": {
+                  "cpu": "50m",
+                  "memory": "64Mi"
+                },
+                "limits": {
+                  "cpu": "250m",
+                  "memory": "128Mi"
+                }
+              },
+              "readinessProbe": {
+                "httpGet": {
+                  "path": "/",
+                  "port": 8080
+                },
+                "initialDelaySeconds": 1,
+                "periodSeconds": 2
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

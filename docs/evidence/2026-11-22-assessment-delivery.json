@@ -1,0 +1,9 @@
+{
+  "validation_passed": true,
+  "results": 34,
+  "openapi_results_validated": 34,
+  "authenticated_grants": 68,
+  "immutable_redelivery_verified": true,
+  "all_receipts_persisted": true,
+  "scope": "Real HTTPS and worker transport with synthetic OAuth/receiver; not Keycloak/API #5 integration"
+}

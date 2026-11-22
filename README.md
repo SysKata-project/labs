@@ -33,7 +33,7 @@ An ephemeral OpenShift feasibility harness and a Java lab lifecycle service are 
 
 ## Status
 
-The bounded feasibility profile has been validated on ephemeral OpenShift 4.22.20. The lifecycle service and terminal gateway have also been validated on ephemeral OpenShift 4.22.22; see the [evidence and limits](docs/lifecycle-validation.md). Assessment workers remain planned.
+The bounded feasibility profile has been validated on ephemeral OpenShift 4.22.20. The lifecycle service and terminal gateway have also been validated on ephemeral OpenShift 4.22.22; see the [evidence and limits](docs/lifecycle-validation.md). The separate assessment worker has passed bounded OpenShift and transport validation; see the [worker contract](docs/assessment-worker.md) and [evidence and limits](docs/assessment-validation.md).
 
 ## MVP implementation tracking
 

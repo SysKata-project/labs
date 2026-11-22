@@ -1,0 +1,229 @@
+{
+  "checks": [
+    {
+      "name": "separate worker and gateway started",
+      "passed": true
+    },
+    {
+      "name": "foundations restricted-controller provisioning",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "healthy final state without fault history is incomplete",
+      "passed": true
+    },
+    {
+      "name": "trusted initial success and controlled fault observed",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "old available replica does not prove repair",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "manifest repair satisfies every criterion",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "alternate imperative repair accepted",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "worker restart preserves trusted stage evidence",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "incorrect Service rejected",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "incorrect Service rejected",
+      "passed": true
+    },
+    {
+      "name": "infrastructure outcome contains no learner grade",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "repaired state remains valid",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated foundations",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "recreated Deployment cannot forge repair history",
+      "passed": true
+    },
+    {
+      "name": "reset provisions a clean generation",
+      "passed": true
+    },
+    {
+      "name": "reset cannot reuse old stage evidence",
+      "passed": true
+    },
+    {
+      "name": "stale generation request rejected",
+      "passed": true
+    },
+    {
+      "name": "administration restricted-controller provisioning",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "administration valid manifest access and quota",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "alternate split Role accepted",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "widened permissions rejected",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "wrong role subject rejected",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "two-pod quota rejected",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "incorrect desired manifest rejected",
+      "passed": true
+    },
+    {
+      "name": "evaluator denied secrets",
+      "passed": true
+    },
+    {
+      "name": "evaluator denied pods/exec",
+      "passed": false
+    }
+  ],
+  "validation_passed": false,
+  "cleanup_passed": true,
+  "limitations": [
+    "Callback receiver/progression belongs to api #5; delivery transport tested separately locally"
+  ]
+}
