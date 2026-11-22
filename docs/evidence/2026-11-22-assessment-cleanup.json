@@ -1,0 +1,6 @@
+{
+  "owned_lab_namespaces_absent": true,
+  "test_installation_absent": true,
+  "test_control_namespace_absent": true,
+  "private_credentials_removed": true
+}

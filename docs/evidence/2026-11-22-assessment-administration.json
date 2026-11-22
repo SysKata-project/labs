@@ -1,0 +1,113 @@
+{
+  "checks": [
+    {
+      "name": "separate worker and gateway started",
+      "passed": true
+    },
+    {
+      "name": "administration restricted-controller provisioning",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "administration valid manifest access and quota",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "alternate split Role accepted",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "widened permissions rejected",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "wrong role subject rejected",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "two-pod quota rejected",
+      "passed": true
+    },
+    {
+      "name": "evaluator cannot create persisted probe pods",
+      "passed": true
+    },
+    {
+      "name": "real worker evaluated administration",
+      "passed": true
+    },
+    {
+      "name": "assessment replay preserves result",
+      "passed": true
+    },
+    {
+      "name": "incorrect desired manifest rejected",
+      "passed": true
+    },
+    {
+      "name": "evaluator denied secrets",
+      "passed": true
+    },
+    {
+      "name": "evaluator denied pods/exec",
+      "passed": true
+    },
+    {
+      "name": "evaluator denied serviceaccounts/token",
+      "passed": true
+    },
+    {
+      "name": "learner cannot act as evaluator",
+      "passed": true
+    },
+    {
+      "name": "terminal has no evaluator credential mount or environment",
+      "passed": true
+    }
+  ],
+  "validation_passed": true,
+  "cleanup_passed": true,
+  "limitations": [
+    "Callback receiver/progression belongs to api #5; delivery transport tested separately locally"
+  ]
+}

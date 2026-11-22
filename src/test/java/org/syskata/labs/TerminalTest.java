@@ -53,7 +53,7 @@ class TerminalTest {
         connection -> {
           store.update(
               connection,
-              "TRUNCATE operations,terminal_tickets,generations,lab_sessions,blocked_subjects");
+              "TRUNCATE assessments,assessment_stages,operations,terminal_tickets,generations,lab_sessions,blocked_subjects");
           return null;
         });
   }
